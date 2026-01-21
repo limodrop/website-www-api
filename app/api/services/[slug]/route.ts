@@ -1,27 +1,9 @@
-export async function GET(_: Request, { params }: { params: { slug: string } }) {
-  const data: Record<string, any> = {
-    "airport-transportation": {
-      id: 1,
-      name: "Airport Transportation",
-      slug: "airport-transportation",
-      description: "Professional airport pickup and drop-off service",
-      image: "/images/services/airport.jpg"
-    },
-    "corporate-travel": {
-      id: 2,
-      name: "Corporate Travel",
-      slug: "corporate-travel",
-      description: "Executive transportation for business professionals",
-      image: "/images/services/corporate.jpg"
-    },
-    "wine-tours": {
-      id: 3,
-      name: "Wine Tours",
-      slug: "wine-tours",
-      description: "Guided wine country tours with professional chauffeur",
-      image: "/images/services/wine.jpg"
-    }
-  }
+﻿import { getServiceBySlug } from "@/lib/data/services"
 
-  return Response.json(data[params.slug] || null)
+export async function GET(request: Request, { params }: { params: { slug: string } }) {
+  const service = await getServiceBySlug(params.slug)
+  if (!service) {
+    return new Response("Not found", { status: 404 })
+  }
+  return Response.json(service)
 }

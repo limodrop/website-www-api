@@ -1,5 +1,2 @@
-export async function GET() {
-  return Response.json({
-    bookingUrl: "https://book.oregontowncar.com"
-  })
-}
+﻿import { getBookingUrl } from "@/lib/data/bookingUrl"
+export async function GET() { return Response.json(await getBookingUrl()) }

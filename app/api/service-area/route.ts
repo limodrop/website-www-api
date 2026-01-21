@@ -1,14 +1,2 @@
-export async function GET() {
-  return Response.json({
-    baseCity: "Portland",
-    radiusMiles: 60,
-    includedCities: [
-      "Portland",
-      "Beaverton",
-      "Hillsboro",
-      "Tigard",
-      "Lake Oswego",
-      "Vancouver, WA"
-    ]
-  })
-}
+﻿import { getServiceArea } from "@/lib/data/serviceArea"
+export async function GET() { return Response.json(await getServiceArea()) }
