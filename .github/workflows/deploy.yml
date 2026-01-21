@@ -1,0 +1,29 @@
+name: Deploy to GHCR
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t ghcr.io/limodrop/website-www-api:latest -t ghcr.io/limodrop/website-www-api:${{ github.sha }} .
+          docker push ghcr.io/limodrop/website-www-api:latest
+          docker push ghcr.io/limodrop/website-www-api:${{ github.sha }}
